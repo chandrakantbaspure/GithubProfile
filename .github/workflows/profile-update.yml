@@ -1,0 +1,32 @@
+name: Update Profile
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Run daily at midnight
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  update-profile:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
+      - name: Update GitHub stats
+        uses: jamesgeorge007/github-activity-readme@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          COMMIT_MSG: 'Update activity stats'
+          MAX_LINES: 5
+          
+      - name: Update profile views
+        uses: andrewbaisden/discord-community-badge@v1
+        with:
+          badge-name: 'Profile Views'
+          label: 'Profile Views'
+          namedLogo: 'github'
+          message: 'Updated'
+          color: 'blue'
+          style: 'flat-square' 
